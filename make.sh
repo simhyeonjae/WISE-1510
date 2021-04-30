@@ -11,7 +11,7 @@ echo "loraNodeLib/" > .mbedignore
 rm lib*.a
 
 if [ "$REGION" == "1" ]; then
-  echo "Ok, build AU"'
+  echo "Ok, build AU"
   cp loraNodeLib/*AU*.a .
 elif [ "$REGION" == "2" ]; then
   echo "Ok, build CN470"
@@ -34,3 +34,5 @@ else
 fi
 
 mbed compile -t GCC_ARM -m MTB_ADV_WISE_1510  -c
+
+
