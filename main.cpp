@@ -269,13 +269,13 @@ float MGRead(void)
     int i;
     float v=0;
 
-    v=ain;/*for (i=0;i<READ_SAMPLE_TIMES;i++) {
+    for (i=0;i<READ_SAMPLE_TIMES;i++) {
         v += ain;
         // delay(READ_SAMPLE_INTERVAL);
-               
-    }*/
-	Thread::wait(1000); 
-    v = (v) *5/1024 ;//(v/READ_SAMPLE_TIMES)
+        Thread::wait(1000);        
+    }
+	
+    v = (v/READ_SAMPLE_TIMES) *5000/1024 ;
     return v;
 }
 
