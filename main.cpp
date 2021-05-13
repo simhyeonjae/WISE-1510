@@ -30,8 +30,8 @@
 //These two values differ from sensor to sensor. user should derermine this value.
 #define         ZERO_POINT_VOLTAGE           (0.220) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 //#define         ZERO_POINT_VOLTAGE           (0.190)
-//#define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
-#define         REACTION_VOLTGAE             (0.070)
+#define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+//#define         REACTION_VOLTGAE             (0.070)
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
                                                      //two points are taken from the curve.
@@ -278,8 +278,8 @@ float MGRead(void)
     }
 	
     //v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
-    //v = (v/READ_SAMPLE_TIMES) * 3.42 ;
-	v = (v/READ_SAMPLE_TIMES) * 500 ;
+    v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+	//v = (v/READ_SAMPLE_TIMES) * 500 ;
     return v;
 }
 
@@ -297,8 +297,8 @@ int  MGGetPercentage(float volts, float *pcurve)
    if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
       return -1;
    } else {
-      //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return pow(10, (((volts*2)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+      return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	  // return pow(10, (((volts*2)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
    }
 }
 
