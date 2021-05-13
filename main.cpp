@@ -278,8 +278,8 @@ float MGRead(void)
     }
 	
     //v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
-    v = (v/READ_SAMPLE_TIMES) * 3.42 ;
-	//v = (v/READ_SAMPLE_TIMES) * 500 ;
+   // v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+	v = (v/READ_SAMPLE_TIMES) * 250 ;
     return v;
 }
 
@@ -297,8 +297,8 @@ int  MGGetPercentage(float volts, float *pcurve)
    if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
       return -1;
    } else {
-      return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	  // return pow(10, (((volts*2)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+      //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	  return pow(10, (((volts*3)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
    }
 }
 
