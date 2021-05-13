@@ -29,7 +29,7 @@
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
 //#define         ZERO_POINT_VOLTAGE           (0.220) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
-#define         ZERO_POINT_VOLTAGE           (0.240)
+#define         ZERO_POINT_VOLTAGE           (0.170)
 //#define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 #define         REACTION_VOLTGAE             (0.050)
 /*****************************Globals***********************************************/
