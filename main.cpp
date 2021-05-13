@@ -31,7 +31,7 @@
 #define         ZERO_POINT_VOLTAGE           (0.220) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 //#define         ZERO_POINT_VOLTAGE           (0.185)
 //#define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
-#define         REACTION_VOLTGAE             (0.010)
+#define         REACTION_VOLTGAE             (0.020)
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
                                                      //two points are taken from the curve.
