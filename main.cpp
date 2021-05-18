@@ -295,7 +295,7 @@ int  MGGetPercentage(float volts, float *pcurve)
       return -1;
    } else {
       //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	return pow(10, (((volts)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	   return pow(10, (((volts*2.67)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
    }
 }
 
@@ -305,15 +305,13 @@ static unsigned int co2_sensor_sku_sen0159(void)
     float volts;
 
     volts = MGRead();
-    //NODE_DEBUG( "MQ7: " );
-	
-    NODE_DEBUG( "SEN-0159: " );
+    NODE_DEBUG( "SEN0159:" );
     //NODE_DEBUG("%f",volts*1000);
     NODE_DEBUG("%f",volts);
     NODE_DEBUG( "V           " );
 
     percentage = MGGetPercentage(volts,CO2Curve);
-    NODE_DEBUG("CO2: ");
+    NODE_DEBUG("CO2:");
     if (percentage == -1) {
         NODE_DEBUG( "<400" );
     } else {
@@ -321,7 +319,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
     }
 
     NODE_DEBUG( "ppm" );
-    NODE_DEBUG("\r\n");
+    NODE_DEBUG("\n");
 
     return percentage;
 }
@@ -330,7 +328,7 @@ static void node_sensor_sku_thread(void const *args)
 {
     while(1){
         Thread::wait(1000);
-       // NODE_DEBUG("HYUNJAE : Thread test \r\n");
+        NODE_DEBUG("HYUNJAE : Thread test \r\n");
         co2_sensor_value = co2_sensor_sku_sen0159(); 
     }
 }
