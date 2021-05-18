@@ -319,7 +319,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
     }
 
     NODE_DEBUG( "ppm" );
-    NODE_DEBUG("\n");
+    NODE_DEBUG("\r\n");
 
     return percentage;
 }
@@ -328,7 +328,7 @@ static void node_sensor_sku_thread(void const *args)
 {
     while(1){
         Thread::wait(1000);
-        NODE_DEBUG("HYUNJAE : Thread test \r\n");
+       // NODE_DEBUG("HYUNJAE : Thread test \r\n");
         co2_sensor_value = co2_sensor_sku_sen0159(); 
     }
 }
