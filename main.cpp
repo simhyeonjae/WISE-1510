@@ -295,7 +295,7 @@ int  MGGetPercentage(float volts, float *pcurve)
       return -1;
    } else {
       //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return pow(10, (((volts*2.3)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	   return pow(10, (((volts*2.45)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
    }
 }
 
@@ -328,7 +328,7 @@ static void node_sensor_sku_thread(void const *args)
 {
     while(1){
         Thread::wait(1000);
-        //NODE_DEBUG("HYUNJAE : Thread test \r\n");
+        NODE_DEBUG("HYUNJAE : Thread test \r\n");
         co2_sensor_value = co2_sensor_sku_sen0159(); 
     }
 }
