@@ -28,7 +28,7 @@
                                                      //normal operation
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
-#define         ZERO_POINT_VOLTAGE           (0.220) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
+#define         ZERO_POINT_VOLTAGE           (0.305) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 #define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
@@ -272,11 +272,11 @@ float MGRead(void)
     for (i=0;i<READ_SAMPLE_TIMES;i++) {
         v += ain;
         // delay(READ_SAMPLE_INTERVAL);
-        Thread::wait(1000);        
+        Thread::wait(1000);
+
     }
-	
-    //v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
-    v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+    //v = (v/READ_SAMPLE_TIMES) *5/1024 ;
+    v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
 
@@ -294,8 +294,7 @@ int  MGGetPercentage(float volts, float *pcurve)
    if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
       return -1;
    } else {
-      //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return pow(10, (((volts*1.63)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+      return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
    }
 }
 
@@ -305,20 +304,19 @@ static unsigned int co2_sensor_sku_sen0159(void)
     float volts;
 
     volts = MGRead();
-    NODE_DEBUG( "MQ5:" );
-    //NODE_DEBUG("%f",volts*1000);
+    NODE_DEBUG("SEN0159 : ");
     NODE_DEBUG("%f",volts);
-    NODE_DEBUG( "V           " );
+    NODE_DEBUG(" V           ");
 
     percentage = MGGetPercentage(volts,CO2Curve);
-    NODE_DEBUG("GAS:");
+    NODE_DEBUG("CO2:");
     if (percentage == -1) {
-        NODE_DEBUG( "<400" );
+        NODE_DEBUG(" <400 ");
     } else {
         NODE_DEBUG("%d",percentage);
     }
 
-    NODE_DEBUG( "ppm" );
+    NODE_DEBUG(" ppm " );
     NODE_DEBUG("\r\n");
 
     return percentage;
@@ -328,7 +326,7 @@ static void node_sensor_sku_thread(void const *args)
 {
     while(1){
         Thread::wait(1000);
-       // NODE_DEBUG("HYUNJAE : Thread test \r\n");
+        //NODE_DEBUG("HYUNJAE : Thread test \r\n");
         co2_sensor_value = co2_sensor_sku_sen0159(); 
     }
 }
@@ -601,15 +599,19 @@ unsigned char node_get_sensor_data (char *data)
     sensor_data[len+2]=0x3;
     len++; // CO2
     sensor_data[len+2]=0x2;
-    len++;  // len:2 bytes  
-    /*sensor_data[len+2]=(co2_sensor_value>>24)&0xff;
+    len++;  // len:2 bytes      
+    /*
+    sensor_data[len+2]=(co2_sensor_value>>24)&0xff;
     len++; 
     sensor_data[len+2]=(co2_sensor_value>>16)&0xff;
-    len++;*/ 
-	sensor_data[len+2]=(co2_sensor_value>>8)&0xff;
+    len++; 
+    */    
+    sensor_data[len+2]=(co2_sensor_value>>8)&0xff;
     len++; 
     sensor_data[len+2]=co2_sensor_value&0xff;
-    len++;
+    len++; 
+    
+
     #endif
 
     #if NODE_SENSOR_CO2_VOC_ENABLE
@@ -964,7 +966,3 @@ int main ()
     return 0;
 }
     
-
-
-
-
