@@ -31,8 +31,8 @@
 #define         ZERO_POINT_VOLTAGE           (0.305) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 #define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 
-#define coefficient_A 19.32 //co
-#define coefficient_B -0.64 //co
+//#define coefficient_A 19.32 //co
+//#define coefficient_B -0.64 //co
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
                                                      //two points are taken from the curve.
@@ -306,13 +306,13 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 ************************************************************************************/
 int  MGGetPercentage(float volts, float *pcurve)
 {
-   if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
-      return -1;
-   } else {
+  // if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
+   //   return -1;
+ //  } else {
       //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
 	 //  return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]); 원래값
-	   return (float)(coefficient_A * pow(getRatio(), coefficient_B));
-   }
+	   return (float)(19.32 * pow(getRatio(), -0.64));
+   //}
 }
 
 static unsigned int co2_sensor_sku_sen0159(void)
@@ -320,7 +320,8 @@ static unsigned int co2_sensor_sku_sen0159(void)
     int percentage;
     float volts;
 
-    volts = MGRead();
+    //volts = MGRead();
+	volts = voltageConversion(ain);
     NODE_DEBUG( "MQ7:" );
     //NODE_DEBUG("%f",volts*1000);
     NODE_DEBUG("%f",volts);
