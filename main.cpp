@@ -289,9 +289,9 @@ float MGRead(void)
     }*/
 	
     //v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
-   // v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+   v = (v/READ_SAMPLE_TIMES) * 3.42 ;
 	
-	v = ain;
+	//v = ain;
     return v;
 }
 
@@ -320,8 +320,8 @@ static unsigned int co2_sensor_sku_sen0159(void)
     int percentage;
     float volts;
 
-    volts = ain;
-	//volts = getRatio();
+    //volts = ain;
+	volts = MGRead();
     NODE_DEBUG( "MQ7:" );
     //NODE_DEBUG("%f",volts*1000);
     NODE_DEBUG("%f",volts);
