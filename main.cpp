@@ -275,8 +275,9 @@ float getRatio(){
   int value = ain;
   float v_out = voltageConversion(value);
   //return (5.0 - v_out) / v_out;
-	float i = ((5.0 – (value*5.0/1024.0)) / (value*5.0/1024.0))/0.15;
-	return i;
+	
+	
+	return (float) ((5.0 – (value*5.0/1024.0)) / (value*5.0/1024.0)) / 0.15;
 }
 
 float MGRead(void)
