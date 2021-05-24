@@ -274,10 +274,10 @@ float voltageConversion(int value){
 float getRatio(){
   int value = ain;
   float v_out = voltageConversion(value);
-  //return (5.0 - v_out) / v_out;
+  return (5.0 - v_out) / v_out;
 	
 	
-	return (5.0 – v_out) / (v_out* 0.15);
+	//return (5.0 – v_out) / (v_out* 0.15);
 }
 
 float MGRead(void)
