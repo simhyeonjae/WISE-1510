@@ -30,6 +30,9 @@
 //These two values differ from sensor to sensor. user should derermine this value.
 #define         ZERO_POINT_VOLTAGE           (0.305) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 #define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+
+#define coefficient_A 19.32 //co
+#define coefficient_B -0.64 //co
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
                                                      //two points are taken from the curve.
@@ -264,6 +267,16 @@ Input:   mg_pin - analog channel
 Output:  output of SEN-000007
 Remarks: This function reads the output of SEN-000007
 ************************************************************************************/
+float voltageConversion(int value){
+  return (float) value * (5.0 / 1023.0);
+}
+
+float getRatio(){
+  int value = analogRead(ain);
+  float v_out = voltageConversion(value);
+  return (5.0 - v_out) / v_out;
+}
+
 float MGRead(void)
 {
     int i;
@@ -277,6 +290,7 @@ float MGRead(void)
 	
     //v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
    // v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+	
 	v = ain;
     return v;
 }
@@ -296,7 +310,8 @@ int  MGGetPercentage(float volts, float *pcurve)
       return -1;
    } else {
       //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	 //  return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]); 원래값
+	   return (float)(coefficient_A * pow(getRatio(), coefficient_B));
    }
 }
 
