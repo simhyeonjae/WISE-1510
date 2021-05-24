@@ -272,7 +272,7 @@ float voltageConversion(int value){
 }
 
 float getRatio(){
-  int value = analogRead(ain);
+  int value = ain;
   float v_out = voltageConversion(value);
   return (5.0 - v_out) / v_out;
 }
