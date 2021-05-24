@@ -277,7 +277,7 @@ float getRatio(){
   //return (5.0 - v_out) / v_out;
 	
 	
-	return (float) ((5.0 – (value*5.0/1024.0)) / (value*5.0/1024.0)) / 0.15;
+	return (float) (5.0 – v_out) / v_out / 0.15;
 }
 
 float MGRead(void)
