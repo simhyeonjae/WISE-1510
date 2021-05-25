@@ -311,7 +311,7 @@ int  MGGetPercentage(float volts, float *pcurve)
  //  } else {
       //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
 	 //  return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]); 원래값
-	   return (float)(19.32 * pow(getRatio(), -0.64));
+	   return (float)(19.32 / pow(getRatio(), 0.64));
    //}
 }
 
@@ -327,8 +327,8 @@ static unsigned int co2_sensor_sku_sen0159(void)
     NODE_DEBUG("%f",volts);
     NODE_DEBUG( "V           " );
 
-   // percentage = MGGetPercentage(volts,CO2Curve);
-	percentage = (float) 19.32 * pow(getRatio(), -0.64);
+   percentage = MGGetPercentage(volts,CO2Curve);
+	//percentage = (float) 19.32 * pow(getRatio(), -0.64);
     NODE_DEBUG("CO:");
     if (percentage == -1) {
         NODE_DEBUG( "<400" );
