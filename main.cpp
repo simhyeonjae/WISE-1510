@@ -272,7 +272,7 @@ float voltageConversion(int value){
 }
 
 float getRatio(){
-  int value = ain;
+  int value = (v/READ_SAMPLE_TIMES) * 3.42;
   float v_out = voltageConversion(value);
   return (5.0 - v_out) / v_out;	
 }
