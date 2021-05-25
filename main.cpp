@@ -328,7 +328,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
     NODE_DEBUG( "V           " );
 
    //percentage = MGGetPercentage(volts,CO2Curve);
-	percentage = 1932 / pow(getRatio(), 0.64) ;
+	percentage = 1932000 / pow(getRatio(), 0.64) ;
     NODE_DEBUG("CO:");
     if (percentage == -1) {
         NODE_DEBUG( "<400" );
