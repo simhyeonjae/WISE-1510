@@ -274,7 +274,7 @@ float voltageConversion(int value){
 float getRatio(){
   int value = ain / 5;
   float v_out = voltageConversion(value);
-  return (5.0 - v_out) / v_out;	
+  return 20 * (5.0 - v_out) / v_out ;	
 }
 
 float MGRead(void)
@@ -311,7 +311,7 @@ int  MGGetPercentage(float volts, float *pcurve)
  //  } else {
       //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
 	 //  return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]); 원래값
-	   return (float)(19.32 * pow(getRatio(), 1 / 0.64));
+	   return (float)(19.32 / pow(getRatio(), 0.64));
    //}
 }
 
