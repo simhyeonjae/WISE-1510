@@ -317,7 +317,8 @@ int  MGGetPercentage(float volts, float *pcurve)
 
 static unsigned int co2_sensor_sku_sen0159(void)
 {
-    int percentage;
+    //int percentage;
+	float	percentage;
     float volts;
 
     //volts = ain;
@@ -327,13 +328,13 @@ static unsigned int co2_sensor_sku_sen0159(void)
     NODE_DEBUG("%f",volts);
     NODE_DEBUG( "V           " );
 
-   percentage = MGGetPercentage(volts,CO2Curve)*20000000;
-	//percentage = 19.32 / pow(getRatio(), 0.64) ;
+   //percentage = MGGetPercentage(volts,CO2Curve);
+	percentage = 19.32 / pow(getRatio(), 0.64) ;
     NODE_DEBUG("CO:");
     if (percentage == -1) {
         NODE_DEBUG( "<400" );
     } else {
-        NODE_DEBUG("%d",percentage);
+        NODE_DEBUG("%f",percentage);
     }
 
     NODE_DEBUG( "ppm" );
