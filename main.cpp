@@ -304,6 +304,8 @@ static unsigned int co2_sensor_sku_sen0159(void)
     int percentage;
     float volts;
 
+	
+	NODE_DEBUG( "ain: %d\n",ain);
     volts = MGRead();
     NODE_DEBUG( "MQ7:" );
     //NODE_DEBUG("%f",volts*1000);
