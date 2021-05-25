@@ -30,6 +30,9 @@
 //These two values differ from sensor to sensor. user should derermine this value.
 #define         ZERO_POINT_VOLTAGE           (0.305) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
 #define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+
+//#define coefficient_A 19.32 //co
+//#define coefficient_B -0.64 //co
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
                                                      //two points are taken from the curve.
@@ -264,6 +267,16 @@ Input:   mg_pin - analog channel
 Output:  output of SEN-000007
 Remarks: This function reads the output of SEN-000007
 ************************************************************************************/
+float voltageConversion(int value){
+  return (float) value * (5.0 / 1023.0);
+}
+
+float getRatio(){
+  int value = ain / 5;
+  float v_out = voltageConversion(value);
+  return (5.0 - v_out) / v_out ;	
+}
+
 float MGRead(void)
 {
     int i;
@@ -275,11 +288,10 @@ float MGRead(void)
         Thread::wait(1000);        
     }
 	
-	
-	NODE_DEBUG( "ain: %d\n",ain);
-	
     //v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
-    v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+   v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+	
+	//v = ain;
     return v;
 }
 
@@ -294,26 +306,32 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 ************************************************************************************/
 int  MGGetPercentage(float volts, float *pcurve)
 {
-   if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
-      return -1;
-   } else {
+  // if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
+   //   return -1;
+ //  } else {
       //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-   }
+	 //  return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]); 원래값
+	   return (float)(19.32 / pow(getRatio(), 0.64));
+   //}
 }
 
 static unsigned int co2_sensor_sku_sen0159(void)
 {
     int percentage;
+	//float	percentage;
     float volts;
 
-    volts = MGRead();
+    //volts = ain;
+	NODE_DEBUG( "ain: %d",ain);
+	volts = MGRead();
     NODE_DEBUG( "MQ7:" );
     //NODE_DEBUG("%f",volts*1000);
     NODE_DEBUG("%f",volts);
     NODE_DEBUG( "V           " );
 
-    percentage = MGGetPercentage(volts,CO2Curve);
+   //percentage = MGGetPercentage(volts,CO2Curve);
+	//percentage = 19.32 / pow(getRatio(), 0.64) ;
+	percentage = 37143 * pow(getRatio(),-3.178);
     NODE_DEBUG("CO:");
     if (percentage == -1) {
         NODE_DEBUG( "<400" );
