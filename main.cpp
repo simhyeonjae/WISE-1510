@@ -272,7 +272,7 @@ float voltageConversion(int value){
 }
 
 float getRatio(){
-  int value = ain * 5;
+  int value = ain / 5;
   float v_out = voltageConversion(value);
   return (5.0 - v_out) / v_out;	
 }
@@ -328,7 +328,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
     NODE_DEBUG( "V           " );
 
    //percentage = MGGetPercentage(volts,CO2Curve);
-	percentage = 1932000 / pow(getRatio(), 0.64) ;
+	percentage = 19.32 / pow(getRatio(), 0.64) ;
     NODE_DEBUG("CO:");
     if (percentage == -1) {
         NODE_DEBUG( "<400" );
