@@ -12,6 +12,7 @@
 #include "mbed.h"
 #include "node_api.h"
 
+
 #define HYUNJAE 1                     /* 20210425 : Code define */
 
 #define WISE_VERSION                  "1510S10MMV0106"
@@ -264,20 +265,30 @@ Input:   mg_pin - analog channel
 Output:  output of SEN-000007
 Remarks: This function reads the output of SEN-000007
 ************************************************************************************/
+
+
+
+  
+
+
+
+
+
+
 float MGRead(void)
 {
     int i;
     float v=0;
- for (i=0;i<READ_SAMPLE_TIMES;i++) {
+
+    for (i=0;i<READ_SAMPLE_TIMES;i++) {
         v += ain;
         // delay(READ_SAMPLE_INTERVAL);
-        Thread::wait(1000);
-
+        Thread::wait(1000);        
     }
-    //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
-	v = (v/READ_SAMPLE_TIMES) * 5;
-    //v = (v/READ_SAMPLE_TIMES) *3.42 ;
-    return v;
+	
+    v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
+    //v = (v/READ_SAMPLE_TIMES) * 3.42 ;
+    return v*1000;
 }
 
 /*****************************  MQGetPercentage **********************************
@@ -289,13 +300,25 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
          logarithmic coordinate, power of 10 is used to convert the result to non-logarithmic
          value.
 ************************************************************************************/
-float  MGGetPercentage(float volts, float *pcurve)
+float MGGetPercentage(float volts, float *pcurve)
 {
    if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
       return -1;
    } else {
-      //return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return 36974*pow(volts,-3.109);
+      //return pow(10, ((volts*1000/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	  // return pow(10, (((volts*6)/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	   
+	   float RS_air=(5.0-volts)/volts; // RS_air를 구한 후
+	   NODE_DEBUG( "RS_air: %f  ", RS_air );
+	  // float R0=RS_air/(26+(1/3));                 // R0를 구함
+	   float R0 = 0.33;
+	   NODE_DEBUG( "R0: %f  ", R0 );
+	   float ratio=RS_air / R0;
+	   NODE_DEBUG( "ratio: %f  ", ratio );
+	   return 3697400*pow(ratio,-3.109);
+	   //return (log10(ratio)+2.2)/36974
+	   //return 574.25*pow(ratio,-2.222);
+	
    }
 }
 
@@ -303,28 +326,23 @@ static unsigned int co2_sensor_sku_sen0159(void)
 {
     float percentage;
     float volts;
-	float R0 = 7200.0;
+	volts = MGRead();
 
-    volts = MGRead();
-    NODE_DEBUG("SEN0159 : ");
+  
+    NODE_DEBUG( "MQ5:" );
+    //NODE_DEBUG("%f",volts*1000);
     NODE_DEBUG("%f",volts);
-    NODE_DEBUG(" V           ");
+    NODE_DEBUG( "V           " );
 
-	float gas = 0;
-	gas = (5.0-volts)/volts;
-	float ratio = gas/R0;
-	float x = 1538.46 * ratio;
-	
-    //percentage = MGGetPercentage(volts,CO2Curve);
-	percentage = MGGetPercentage(x,CO2Curve);
+    percentage = MGGetPercentage(volts,CO2Curve);
     NODE_DEBUG("GAS:");
     if (percentage == -1) {
-        NODE_DEBUG(" <400 ");
+        NODE_DEBUG( "<400" );
     } else {
         NODE_DEBUG("%f",percentage);
     }
 
-    NODE_DEBUG(" ppm " );
+    NODE_DEBUG( "ppm" );
     NODE_DEBUG("\r\n");
 
     return percentage;
@@ -334,7 +352,7 @@ static void node_sensor_sku_thread(void const *args)
 {
     while(1){
         Thread::wait(1000);
-        //NODE_DEBUG("HYUNJAE : Thread test \r\n");
+       // NODE_DEBUG("HYUNJAE : Thread test \r\n");
         co2_sensor_value = co2_sensor_sku_sen0159(); 
     }
 }
@@ -607,19 +625,15 @@ unsigned char node_get_sensor_data (char *data)
     sensor_data[len+2]=0x3;
     len++; // CO2
     sensor_data[len+2]=0x2;
-    len++;  // len:2 bytes      
-    /*
-    sensor_data[len+2]=(co2_sensor_value>>24)&0xff;
+    len++;  // len:2 bytes  
+    /*sensor_data[len+2]=(co2_sensor_value>>24)&0xff;
     len++; 
     sensor_data[len+2]=(co2_sensor_value>>16)&0xff;
-    len++; 
-    */    
-    sensor_data[len+2]=(co2_sensor_value>>8)&0xff;
+    len++;*/ 
+	sensor_data[len+2]=(co2_sensor_value>>8)&0xff;
     len++; 
     sensor_data[len+2]=co2_sensor_value&0xff;
-    len++; 
-    
-
+    len++;
     #endif
 
     #if NODE_SENSOR_CO2_VOC_ENABLE
@@ -974,3 +988,7 @@ int main ()
     return 0;
 }
     
+
+
+
+
