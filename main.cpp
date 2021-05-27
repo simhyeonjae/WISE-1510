@@ -318,7 +318,7 @@ float MGGetPercentage(float volts, float *pcurve)
 	   
 	   NODE_DEBUG( "ratio: %f  ", ratio );
 	   //return 36974*pow(ratio,-2.2);
-	   return (log10f(ratio)+2.2)/36974
+	   return (math.log10(ratio)+2.2)/36974
 	
    }
 }
