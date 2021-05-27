@@ -310,13 +310,13 @@ float MGGetPercentage(float volts, float *pcurve)
 	   
 	   float RS_air=(5.0-volts)/volts; // RS_air를 구한 후
 	   NODE_DEBUG( "RS_air: %f  ", RS_air );
-	  float R0=RS_air/(26+(1/3));                 // R0를 구함
-	   //float R0 = 0.33;
+	  //float R0=RS_air/(26+(1/3));                 // R0를 구함
+	   float R0 = 0.33;
 	   NODE_DEBUG( "R0: %f  ", R0 );
 	   float ratio=RS_air / R0;
 	   NODE_DEBUG( "ratio: %f  ", ratio );
 	  // return 3697400*pow(ratio,-3.109);
-	   return 99.042*pow(ratio,-1.518);
+	   return 99.042*pow(ratio,1.518);
 	   //return (log10(ratio)+2.2)/36974
 	   //return 574.25*pow(ratio,-2.222);
 	
