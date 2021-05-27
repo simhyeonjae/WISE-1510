@@ -294,7 +294,8 @@ int  MGGetPercentage(float volts, float *pcurve)
    if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
       return -1;
    } else {
-      return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+      //return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	   return 36974*pow(volts,-3.109);
    }
 }
 
