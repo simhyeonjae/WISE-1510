@@ -289,7 +289,7 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
          logarithmic coordinate, power of 10 is used to convert the result to non-logarithmic
          value.
 ************************************************************************************/
-int  MGGetPercentage(float volts, float *pcurve)
+float  MGGetPercentage(float volts, float *pcurve)
 {
    if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
       return -1;
@@ -301,20 +301,27 @@ int  MGGetPercentage(float volts, float *pcurve)
 
 static unsigned int co2_sensor_sku_sen0159(void)
 {
-    int percentage;
+    float percentage;
     float volts;
+	float R0 = 7200.0;
 
     volts = MGRead();
     NODE_DEBUG("SEN0159 : ");
     NODE_DEBUG("%f",volts);
     NODE_DEBUG(" V           ");
 
-    percentage = MGGetPercentage(volts,CO2Curve);
-    NODE_DEBUG("CO2:");
+	float gas = 0;
+	gas = (5.0-volts)/volts;
+	float ratio = gas/R0;
+	float x = 1538.46 * ratio;
+	
+    //percentage = MGGetPercentage(volts,CO2Curve);
+	percentage = MGGetPercentage(x,CO2Curve);
+    NODE_DEBUG("GAS:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
-        NODE_DEBUG("%d",percentage);
+        NODE_DEBUG("%f",percentage);
     }
 
     NODE_DEBUG(" ppm " );
