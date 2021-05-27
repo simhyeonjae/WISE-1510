@@ -311,7 +311,7 @@ float MGGetPercentage(float volts, float *pcurve)
 	   float RS_air=(5.0-volts)/volts; // RS_air를 구한 후
 	   NODE_DEBUG( "RS_air: %f  ", RS_air );
 	  // float R0=RS_air/(26+(1/3));                 // R0를 구함
-	   float R0 = 0.32;
+	   float R0 = 10;
 	   NODE_DEBUG( "R0: %f  ", R0 );
 	   float ratio=RS_air / R0;
 	   
@@ -330,13 +330,13 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	volts = MGRead();
 
   
-    NODE_DEBUG( "MQ7:" );
+    NODE_DEBUG( "MQ5:" );
     //NODE_DEBUG("%f",volts*1000);
     NODE_DEBUG("%f",volts);
     NODE_DEBUG( "V           " );
 
     percentage = MGGetPercentage(volts,CO2Curve);
-    NODE_DEBUG("CO:");
+    NODE_DEBUG("GAS:");
     if (percentage == -1) {
         NODE_DEBUG( "<400" );
     } else {
