@@ -11,7 +11,6 @@
 
 #include "mbed.h"
 #include "node_api.h"
-#include <math.h>
 
 
 #define HYUNJAE 1                     /* 20210425 : Code define */
@@ -313,11 +312,11 @@ float MGGetPercentage(float volts, float *pcurve)
 	   NODE_DEBUG( "RS_air: %f  ", RS_air );
 	   float R0=RS_air/(26+(1/3));                 // R0를 구함
 	   NODE_DEBUG( "R0: %f  ", R0 );
-	   float ratio=RS_air / R0;
+	   float ratio=RS_air / R0 * 1.2;
 	   
 	   NODE_DEBUG( "ratio: %f  ", ratio );
-	   //return 36974*pow(ratio,-2.2);
-	   return (log10(ratio)+2.2)/36974
+	   return 36974*pow(ratio,-2.2);
+	   //return (log10(ratio)+2.2)/36974
 	
    }
 }
