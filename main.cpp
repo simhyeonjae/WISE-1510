@@ -287,7 +287,7 @@ float MGRead(void)
 	
     v = (v/READ_SAMPLE_TIMES) * 5 /1024 ;
     //v = (v/READ_SAMPLE_TIMES) * 3.42 ;
-    return v;
+    return v*1000;
 }
 
 /*****************************  MQGetPercentage **********************************
