@@ -275,8 +275,8 @@ float MGRead(void)
         Thread::wait(1000);
 
     }
-    //v = (v/READ_SAMPLE_TIMES) *5/1024 ;
-    v = (v/READ_SAMPLE_TIMES) *3.42 ;
+    v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
+    //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
 
