@@ -316,7 +316,7 @@ float MGGetPercentage(float volts, float *pcurve)
 	   float ratio=RS_air / R0;
 	   NODE_DEBUG( "ratio: %f  ", ratio );
 	  // return 3697400*pow(ratio,-3.109);
-	   return 99.042*pow(ratio,1.518);
+	   return 0.099*pow(ratio,1.518);
 	   //return (log10(ratio)+2.2)/36974
 	   //return 574.25*pow(ratio,-2.222);
 	
