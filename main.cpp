@@ -306,7 +306,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
     float volts;
 	float R0 = 7200.0;
 
-    volts = MGRead();
+    volts = MGRead()*5;
     NODE_DEBUG("SEN0159 : ");
     NODE_DEBUG("%f",volts);
     NODE_DEBUG(" V           ");
