@@ -307,7 +307,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	float R0 = 7200.0;
 
     volts = MGRead()*5;
-    NODE_DEBUG("MQ7 : ");
+    NODE_DEBUG("MQ5 : ");
     NODE_DEBUG("%f",volts);
     NODE_DEBUG(" V           ");
 
@@ -318,7 +318,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	
     //percentage = MGGetPercentage(volts,CO2Curve);
 	percentage = MGGetPercentage(x,CO2Curve);
-    NODE_DEBUG("CO:");
+    NODE_DEBUG("GAS:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
