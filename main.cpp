@@ -296,7 +296,7 @@ float  MGGetPercentage(float volts, float *pcurve)
       return -1;
    } else {
       //return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return 37694*pow(volts,-3.109);
+	   return 1.5*pow(volts,-3.109);
    }
 }
 
