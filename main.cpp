@@ -296,7 +296,7 @@ float  MGGetPercentage(float volts, float *pcurve)
       return -1;
    } else {
       //return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return 150000*pow(volts,-3.109);
+	   return 37694*pow(volts,-3.109);
    }
 }
 
@@ -306,7 +306,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
     float volts;
 	float R0 = 7200.0;
 
-    volts = MGRead()*5;
+    volts = MGRead()*3;
     NODE_DEBUG("SEN0159 : ");
     NODE_DEBUG("%f",volts);
     NODE_DEBUG(" V           ");
