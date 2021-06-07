@@ -322,7 +322,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
-        NODE_DEBUG("%f",percentage);
+        NODE_DEBUG("%f",percentage*100);
     }
 
     NODE_DEBUG(" ppm " );
