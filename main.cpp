@@ -317,12 +317,12 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	float x = 1538.46 * ratio;
 	
     //percentage = MGGetPercentage(volts,CO2Curve);
-	percentage = MGGetPercentage(x,CO2Curve);
+	percentage = MGGetPercentage(x,CO2Curve)*100;
     NODE_DEBUG("CO:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
-        NODE_DEBUG("%f",percentage*100);
+        NODE_DEBUG("%f",percentage);
     }
 
     NODE_DEBUG(" ppm " );
