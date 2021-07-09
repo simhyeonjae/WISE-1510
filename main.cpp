@@ -304,20 +304,20 @@ static unsigned int co2_sensor_sku_sen0159(void)
 {
     float percentage;
     float volts;
-	float R0 = 7200.0;
+	//float R0 = 7200.0;
 
     volts = MGRead();
     NODE_DEBUG("MG811 : ");
     NODE_DEBUG("%f",volts);
     NODE_DEBUG(" V           ");
 
-	float gas = 0;
-	gas = (5.0-volts)/volts;
-	float ratio = gas/R0;
-	float x = 1538.46 * ratio;
+	//float gas = 0;
+	//gas = (5.0-volts)/volts;
+	//float ratio = gas/R0;
+	//float x = 1538.46 * ratio;
 	
-    //percentage = MGGetPercentage(volts,CO2Curve);
-	percentage = MGGetPercentage(x,CO2Curve)*100;
+    percentage = MGGetPercentage(volts,CO2Curve);
+	//percentage = MGGetPercentage(x,CO2Curve)*100;
     NODE_DEBUG("CO2:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
