@@ -28,8 +28,8 @@
                                                      //normal operation
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
-#define         ZERO_POINT_VOLTAGE           (0.305) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
-#define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+#define         ZERO_POINT_VOLTAGE           (0.324) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
+#define         REACTION_VOLTGAE             (0.020) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
                                                      //two points are taken from the curve.
@@ -276,7 +276,7 @@ float MGRead(void)
     }
     //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
 	//v = (v/READ_SAMPLE_TIMES)/1024 * 5;
-	v =  (v/READ_SAMPLE_TIMES)*5;
+	v =  (v/READ_SAMPLE_TIMES)*5/1024;
     //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
@@ -295,8 +295,8 @@ float  MGGetPercentage(float volts, float *pcurve)
    if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
       return -1;
    } else {
-      //return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-	   return pow(volts,3.401);
+      return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	   //return pow(volts,3.401);
    }
 }
 
@@ -307,7 +307,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	float R0 = 7200.0;
 
     volts = MGRead();
-    NODE_DEBUG("MQ7 : ");
+    NODE_DEBUG("MG811 : ");
     NODE_DEBUG("%f",volts);
     NODE_DEBUG(" V           ");
 
@@ -318,7 +318,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	
     //percentage = MGGetPercentage(volts,CO2Curve);
 	percentage = MGGetPercentage(x,CO2Curve)*100;
-    NODE_DEBUG("CO:");
+    NODE_DEBUG("CO2:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
