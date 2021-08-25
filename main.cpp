@@ -276,7 +276,7 @@ float MGRead(void)
     }
     //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
 	//v = (v/READ_SAMPLE_TIMES)/1024 * 5;
-	v =  (v/READ_SAMPLE_TIMES)*25000/1024;
+	v =  (v/READ_SAMPLE_TIMES)*5/1024;
     //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
@@ -292,12 +292,15 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 ************************************************************************************/
 float  MGGetPercentage(float volts, float *pcurve)
 {
-   if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
-      return -1;
-   } else {
-      return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+   //if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
+     // return -1;
+   //} else {
+     // return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
 	   //return pow(volts,3.401);
-   }
+   	float voc=0;
+	voc=(0.172*volts-0.01)*1000;
+	return voc; 
+	//}
 }
 
 static unsigned int co2_sensor_sku_sen0159(void)
@@ -318,7 +321,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	
     percentage = MGGetPercentage(volts,CO2Curve);
 	//percentage = MGGetPercentage(x,CO2Curve)*100;
-    NODE_DEBUG("CO2:");
+    NODE_DEBUG("Dust1:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
