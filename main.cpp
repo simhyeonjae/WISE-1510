@@ -276,7 +276,7 @@ float MGRead(void)
     }
     //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
 	//v = (v/READ_SAMPLE_TIMES)/1024 * 5;
-	v =  (v/READ_SAMPLE_TIMES)*25000/1024;
+	v =  (v/READ_SAMPLE_TIMES)*25750/1024;
     //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
@@ -298,7 +298,7 @@ float  MGGetPercentage(float volts, float *pcurve)
       return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
    }
 	   
-	return pow(volts,3.401);
+	  									//return pow(volts,3.401);
  	
 	
 	//float dust=(volts-0.35) / 0.005;
