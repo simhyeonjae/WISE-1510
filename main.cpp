@@ -303,21 +303,23 @@ float  MGGetPercentage(float volts, float *pcurve)
 	  								//return pow(volts,3.401);
  	
 	
-	float dust=(volts-0.01) / 0.005;
-	return dust;
 	
-}
-float MGGetPPM(float dust)
-{
+	
 	int i;
 	float v=0;
  	for (i=0;i<PPM_SAMPLE_TIMES;i++) {
-        v += dust;
-        // delay(READ_SAMPLE_INTERVAL);
+        	float dust=(volts-0.01) / 0.005;
+		v += dust;
+       
         Thread::wait(1000);
 	}
-	return v;
+	float a;
+	a=v/10
+	return a;
+	
+	
 }
+
 	
 static unsigned int co2_sensor_sku_sen0159(void)
 {
