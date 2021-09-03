@@ -29,9 +29,9 @@
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
 #define         ZERO_POINT_VOLTAGE           (0.324) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
-#define         REACTION_VOLTGAE             (0.020) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+#define         REACTION_VOLTGAE             (0.059) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 /*****************************Globals***********************************************/
-float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
+float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-4))};
                                                      //two points are taken from the curve.
                                                      //with these two points, a line is formed which is
                                                      //"approximately equivalent" to the original curve.
@@ -292,11 +292,11 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 ************************************************************************************/
 float  MGGetPercentage(float volts, float *pcurve)
 {
-  if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
-     return -1;
-   } else {
+  //if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
+    // return -1;
+  // } else {
      return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-  }
+//  }
 	   
 	  									//return pow(volts,3.401);
  	
@@ -324,7 +324,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	
     percentage = MGGetPercentage(volts,CO2Curve);
 	//percentage = MGGetPercentage(x,CO2Curve)*100;
-    NODE_DEBUG("CO2_1_3:");
+    NODE_DEBUG("CO2_2_2:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
