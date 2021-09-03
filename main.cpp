@@ -276,7 +276,7 @@ float MGRead(void)
     }
     //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
 	//v = (v/READ_SAMPLE_TIMES)/1024 * 5;
-	v =  (v/READ_SAMPLE_TIMES)*18000/1024;
+	v =  (v/READ_SAMPLE_TIMES)*20000/1024;
     //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
