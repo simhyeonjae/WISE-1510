@@ -24,8 +24,10 @@
 #define         DC_GAIN                      (8.5)   //define the DC gain of amplifier
 /***********************Software Related Macros************************************/
 #define         READ_SAMPLE_INTERVAL         (50)    //define how many samples you are going to take in normal operation
-#define         READ_SAMPLE_TIMES            (50)     //define the time interval(in milisecond) between each samples in
+#define         READ_SAMPLE_TIMES            (5)     //define the time interval(in milisecond) between each samples in
                                                      //normal operation
+
+#define       PPM_SAMPLE_TIMES (10)//get 10 ppm values 
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
 #define         ZERO_POINT_VOLTAGE           (0.324) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
@@ -298,14 +300,25 @@ float  MGGetPercentage(float volts, float *pcurve)
  //     return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
  //  }
 	   
-	  									//return pow(volts,3.401);
+	  								//return pow(volts,3.401);
  	
 	
 	float dust=(volts-0.01) / 0.005;
 	return dust;
 	
 }
-
+float MGGetPPM(float dust)
+{
+	int i;
+	float v=0;
+ 	for (i=0;i<PPM_SAMPLE_TIMES;i++) {
+        v += dust;
+        // delay(READ_SAMPLE_INTERVAL);
+        Thread::wait(1000);
+	}
+	return v;
+}
+	
 static unsigned int co2_sensor_sku_sen0159(void)
 {
     float percentage;
@@ -322,9 +335,9 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	//float ratio = gas/R0;
 	//float x = 1538.46 * ratio;
 	
-    percentage = MGGetPercentage(volts,CO2Curve);
+    percentage = MGGetPPM(dust);
 	//percentage = MGGetPercentage(x,CO2Curve)*100;
-    NODE_DEBUG("Dust6:");
+    NODE_DEBUG("Dust7:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
