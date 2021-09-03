@@ -314,7 +314,7 @@ float  MGGetPercentage(float volts, float *pcurve)
         Thread::wait(1000);
 	}
 	float a;
-	a=v/10
+	a=v/10;
 	return a;
 	
 	
