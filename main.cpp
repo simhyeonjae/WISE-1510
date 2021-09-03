@@ -24,7 +24,7 @@
 #define         DC_GAIN                      (8.5)   //define the DC gain of amplifier
 /***********************Software Related Macros************************************/
 #define         READ_SAMPLE_INTERVAL         (50)    //define how many samples you are going to take in normal operation
-#define         READ_SAMPLE_TIMES            (5)     //define the time interval(in milisecond) between each samples in
+#define         READ_SAMPLE_TIMES            (50)     //define the time interval(in milisecond) between each samples in
                                                      //normal operation
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
@@ -276,7 +276,7 @@ float MGRead(void)
     }
     //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
 	//v = (v/READ_SAMPLE_TIMES)/1024 * 5;
-	v =  (v/READ_SAMPLE_TIMES)*22000/1024;
+	v =  (v/READ_SAMPLE_TIMES)*25000/1024;
     //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
@@ -324,7 +324,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	
     percentage = MGGetPercentage(volts,CO2Curve);
 	//percentage = MGGetPercentage(x,CO2Curve)*100;
-    NODE_DEBUG("Dust3_1_5:");
+    NODE_DEBUG("Dust6:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
