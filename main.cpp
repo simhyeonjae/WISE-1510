@@ -337,7 +337,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	//float ratio = gas/R0;
 	//float x = 1538.46 * ratio;
 	
-    percentage = MGGetPPM(dust);
+    percentage =  MGGetPercentage(volts,CO2Curve);
 	//percentage = MGGetPercentage(x,CO2Curve)*100;
     NODE_DEBUG("Dust7:");
     if (percentage == -1) {
