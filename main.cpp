@@ -275,7 +275,7 @@ float MGRead(void)
 
     }
     //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
-	v = (v/READ_SAMPLE_TIMES)*5/1024;
+	v = (v/READ_SAMPLE_TIMES)*25000/1024;
 	//v =  (v/READ_SAMPLE_TIMES)*26250/1024;
     //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
@@ -324,7 +324,7 @@ static unsigned int co2_sensor_sku_sen0159(void)
 	
     percentage = MGGetPercentage(volts,CO2Curve);
 	//percentage = MGGetPercentage(x,CO2Curve)*100;
-    NODE_DEBUG("CO2_1:");
+    NODE_DEBUG("CO2_4:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
