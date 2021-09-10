@@ -292,11 +292,11 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 ************************************************************************************/
 float  MGGetPercentage(float volts, float *pcurve)
 {
-   if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
-     return -1;
-   } else {
+  // if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
+    // return -1;
+  // } else {
       return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-   }
+  // }
 	   
 	  									//return pow(volts,3.401);
  	
