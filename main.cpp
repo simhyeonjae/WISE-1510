@@ -24,12 +24,12 @@
 #define         DC_GAIN                      (8.5)   //define the DC gain of amplifier
 /***********************Software Related Macros************************************/
 #define         READ_SAMPLE_INTERVAL         (50)    //define how many samples you are going to take in normal operation
-#define         READ_SAMPLE_TIMES            (50)     //define the time interval(in milisecond) between each samples in
+#define         READ_SAMPLE_TIMES            (5)     //define the time interval(in milisecond) between each samples in
                                                      //normal operation
 /**********************Application Related Macros**********************************/
 //These two values differ from sensor to sensor. user should derermine this value.
-#define         ZERO_POINT_VOLTAGE           (0.324) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
-#define         REACTION_VOLTGAE             (0.020) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
+#define         ZERO_POINT_VOLTAGE           (0.305) //define the output of the sensor in volts when the concentration of CO2 is 400PPM
+#define         REACTION_VOLTGAE             (0.030) //define the voltage drop of the sensor when move the sensor from air into 1000ppm CO2
 /*****************************Globals***********************************************/
 float           CO2Curve[3]  =  {2.602,ZERO_POINT_VOLTAGE,(REACTION_VOLTGAE/(2.602-3))};
                                                      //two points are taken from the curve.
@@ -275,8 +275,8 @@ float MGRead(void)
 
     }
     //v = (v/READ_SAMPLE_TIMES) / 1024 * 5 ;
-	//v = (v/READ_SAMPLE_TIMES)*25000/1024;
-	v =  (v/READ_SAMPLE_TIMES)*28125/1024;
+	//v = (v/READ_SAMPLE_TIMES)/1024 * 5;
+	v =  (v/READ_SAMPLE_TIMES)*5;
     //v = (v/READ_SAMPLE_TIMES) *3.42 ;
     return v;
 }
@@ -292,39 +292,33 @@ Remarks: By using the slope and a point of the line. The x(logarithmic value of 
 ************************************************************************************/
 float  MGGetPercentage(float volts, float *pcurve)
 {
-  // if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
-    // return -1;
-  // } else {
-      return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
-  // }
-	   
-	  									//return pow(volts,3.401);
- 	
-	
-	//float dust=(volts-0.35) / 0.005;
-	//return dust;
-	
+   if ((volts/DC_GAIN )>=ZERO_POINT_VOLTAGE) {
+      return -1;
+   } else {
+      //return pow(10, ((volts/DC_GAIN)-pcurve[1])/pcurve[2]+pcurve[0]);
+	   return pow(volts,-1.709);
+   }
 }
 
 static unsigned int co2_sensor_sku_sen0159(void)
 {
     float percentage;
     float volts;
-	//float R0 = 7200.0;
+	float R0 = 7200.0;
 
-    volts = MGRead();
-    NODE_DEBUG("MG811 : ");
+    volts = MGRead()*10;
+    NODE_DEBUG("MQ5 : ");
     NODE_DEBUG("%f",volts);
     NODE_DEBUG(" V           ");
 
-	//float gas = 0;
-	//gas = (5.0-volts)/volts;
-	//float ratio = gas/R0;
-	//float x = 1538.46 * ratio;
+	float gas = 0;
+	gas = (5.0-volts)/volts;
+	float ratio = gas/R0;
+	float x = 1538.46 * ratio;
 	
-    percentage = MGGetPercentage(volts,CO2Curve);
-	//percentage = MGGetPercentage(x,CO2Curve)*100;
-    NODE_DEBUG("CO2_4_2:");
+    //percentage = MGGetPercentage(volts,CO2Curve);
+	percentage = MGGetPercentage(x,CO2Curve);
+    NODE_DEBUG("GAS:");
     if (percentage == -1) {
         NODE_DEBUG(" <400 ");
     } else {
@@ -980,3 +974,4 @@ int main ()
     /*Never reach here*/    
     return 0;
 }
+    
